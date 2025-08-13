@@ -119,4 +119,4 @@ A **fully modular**, **web-based** Gym Management System with a clean UI, respon
 
 ## 📄 License
 
-Use freely for learning or internal projects. Add a license here if needed.
+Use freely for learning or internal projects.
