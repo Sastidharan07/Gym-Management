@@ -4,17 +4,16 @@ A **fully modular**, **web-based** Gym Management System with a clean UI, respon
 
 ---
 
-## 📂 File Structure
-gym-management/
-├── index.html # Main HTML layout & navigation
-├── styles.css # All styles & responsive design
-├── auth.js # Login & authentication logic
-├── data.js # Data handling & localStorage management
-├── main.js # Main app logic & UI control
-└── README.md # Project documentation
+## 📂 Project Structure
+📁 gym-management/
+│
+├── 📄 index.html — Main HTML layout & navigation
+├── 🎨 styles.css — All styles & responsive design
+├── 🔐 auth.js — Login & authentication logic
+├── 📊 data.js — Data handling & LocalStorage management
+├── ⚙️ main.js — Main app logic & UI control
+└── 📝 README.md — Project documentation
 
-
----
 
 ## 🚀 Features by Module
 
