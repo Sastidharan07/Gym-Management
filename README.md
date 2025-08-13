@@ -2,6 +2,8 @@
 
 A **fully modular**, **web-based** Gym Management System with a clean UI, responsive design, and **separate files for each functionality**, making it easy to maintain and expand.
 
+🔗 **Live Demo:** [https://sastidharan07.github.io/Gym-Management/](https://sastidharan07.github.io/Gym-Management/)
+
 ---
 
 ## 🚀 Features by Module
