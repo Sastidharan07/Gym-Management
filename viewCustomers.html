@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Customers - Gym Management</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>👥 Customer Management</h1>
+            <div class="nav-buttons">
+                <a href="index.html" class="btn btn-secondary">← Dashboard</a>
+                <button onclick="logout()" class="btn btn-danger">Logout</button>
+            </div>
+        </div>
+        
+        <div class="content">
+            <div class="customers-header">
+                <h2>All Customers</h2>
+                <div class="header-actions">
+                    <input type="text" id="searchCustomers" placeholder="Search customers..." onkeyup="filterCustomers()">
+                    <a href="addCustomer.html" class="btn">+ Add Customer</a>
+                </div>
+            </div>
+            
+            <div id="customersList" class="customers-list"></div>
+            
+            <div class="quick-links">
+                <h3>Quick Actions</h3>
+                <a href="addCustomer.html" class="btn">Add New Customer</a>
+                <a href="addActivity.html" class="btn">Add Activity</a>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+    <script>
+        // Check if user is logged in
+        if (!isLoggedIn()) {
+            window.location.href = 'login.html';
+        }
+        
+        // Initialize page
+        window.onload = function() {
+            displayCustomers();
+        };
+        
+        function displayCustomers() {
+            const container = document.getElementById('customersList');
+            const customers = getCustomers();
+            
+            if (customers.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <h3>No customers found</h3>
+                        <p>Start by adding your first customer!</p>
+                        <a href="addCustomer.html" class="btn">Add Customer</a>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = customers.map(customer => {
+                const customerActivities = getCustomerActivities(customer.id);
+                const bmi = calculateBMI(customer.weight, customer.height);
+                const recentActivities = customerActivities.slice(-3).reverse();
+                
+                return `
+                    <div class="customer-card" data-customer-name="${customer.name.toLowerCase()}">
+                        <div class="customer-header">
+                            <div class="customer-name">${customer.name}</div>
+                            <div class="customer-actions">
+                                <button class="btn btn-small" onclick="viewCustomerDetails(${customer.id})">Details</button>
+                                <button class="btn btn-danger btn-small" onclick="handleDeleteCustomer(${customer.id})">Delete</button>
+                            </div>
+                        </div>
+                        
+                        <div class="customer-info">
+                            <div class="info-item">
+                                <strong>Age:</strong> ${customer.age} years
+                            </div>
+                            <div class="info-item">
+                                <strong>Height:</strong> ${customer.height} cm
+                            </div>
+                            <div class="info-item">
+                                <strong>Weight:</strong> ${customer.weight} kg
+                            </div>
+                            <div class="info-item">
+                                <strong>BMI:</strong> ${bmi}
+                            </div>
+                            <div class="info-item">
+                                <strong>Phone:</strong> ${customer.phone}
+                            </div>
+                            <div class="info-item">
+                                <strong>Join Date:</strong> ${customer.joinDate}
+                            </div>
+                        </div>
+                        
+                        <div class="activities">
+                            <h4>Recent Activities (${customerActivities.length} total)</h4>
+                            ${recentActivities.length === 0 ? 
+                                '<p class="no-activities">No activities recorded yet.</p>' : 
+                                recentActivities.map(activity => `
+                                    <div class="activity-item">
+                                        <strong>${activity.date}</strong> - ${activity.type} 
+                                        (${activity.duration} min${activity.calories ? `, ${activity.calories} cal` : ''})
+                                        ${activity.notes ? `<br><em>${activity.notes}</em>` : ''}
+                                    </div>
+                                `).join('')
+                            }
+                            ${customerActivities.length > 3 ? 
+                                `<p class="more-activities">... and ${customerActivities.length - 3} more activities</p>` : 
+                                ''
+                            }
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function filterCustomers() {
+            const searchTerm = document.getElementById('searchCustomers').value.toLowerCase();
+            const customerCards = document.querySelectorAll('.customer-card');
+            
+            customerCards.forEach(card => {
+                const customerName = card.getAttribute('data-customer-name');
+                if (customerName.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+        
+        function viewCustomerDetails(customerId) {
+            const customer = getCustomerById(customerId);
+            const activities = getCustomerActivities(customerId);
+            
+            alert(`Customer Details:\n\nName: ${customer.name}\nAge: ${customer.age}\nHeight: ${customer.height}cm\nWeight: ${customer.weight}kg\nBMI: ${calculateBMI(customer.weight, customer.height)}\nPhone: ${customer.phone}\nTotal Activities: ${activities.length}\nJoin Date: ${customer.joinDate}`);
+        }
+        
+        function handleDeleteCustomer(customerId) {
+            const customer = getCustomerById(customerId);
+            if (confirm(`Are you sure you want to delete "${customer.name}" and all their activities?`)) {
+                deleteCustomer(customerId);
+                displayCustomers();
+            }
+        }
+    </script>
+</body>
+</html>

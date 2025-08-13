@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gym Management System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💪 Gym Management System</h1>
+            <p>Welcome to your gym management dashboard</p>
+        </div>
+        
+        <div class="dashboard">
+            <h2>Dashboard</h2>
+            <div class="dashboard-cards">
+                <div class="card">
+                    <h3>👥 Customers</h3>
+                    <p id="customerCount">0</p>
+                    <a href="addCustomer.html" class="btn">Add Customer</a>
+                </div>
+                
+                <div class="card">
+                    <h3>🏃‍♂️ Activities</h3>
+                    <p id="activityCount">0</p>
+                    <a href="addActivity.html" class="btn">Add Activity</a>
+                </div>
+                
+                <div class="card">
+                    <h3>📊 View Data</h3>
+                    <p>Manage Records</p>
+                    <a href="viewCustomers.html" class="btn">View Customers</a>
+                </div>
+                
+                <div class="card">
+                    <h3>🔐 Account</h3>
+                    <p>Session Active</p>
+                    <button onclick="logout()" class="btn btn-danger">Logout</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="quick-stats">
+            <h3>Quick Stats</h3>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span class="stat-label">Total Members:</span>
+                    <span class="stat-value" id="totalMembers">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Today's Activities:</span>
+                    <span class="stat-value" id="todayActivities">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">This Week:</span>
+                    <span class="stat-value" id="weekActivities">0</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+    <script>
+        // Check if user is logged in
+        if (!isLoggedIn()) {
+            window.location.href = 'login.html';
+        }
+        
+        // Update dashboard stats
+        updateDashboardStats();
+    </script>
+</body>
+</html>

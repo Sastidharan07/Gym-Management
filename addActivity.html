@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Activity - Gym Management</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏃‍♂️ Add Daily Activity</h1>
+            <div class="nav-buttons">
+                <a href="index.html" class="btn btn-secondary">← Dashboard</a>
+                <button onclick="logout()" class="btn btn-danger">Logout</button>
+            </div>
+        </div>
+        
+        <div class="content">
+            <div class="form-container">
+                <h2>Activity Information</h2>
+                
+                <div id="successMessage" class="success-message hidden"></div>
+                <div id="errorMessage" class="error-message hidden"></div>
+                
+                <form onsubmit="handleAddActivity(event)">
+                    <div class="form-group">
+                        <label for="activityCustomer">Select Customer *</label>
+                        <select id="activityCustomer" required>
+                            <option value="">Choose a customer...</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="activityDate">Date *</label>
+                            <input type="date" id="activityDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="activityType">Activity Type *</label>
+                            <select id="activityType" required>
+                                <option value="">Select activity...</option>
+                                <option value="Cardio">Cardio</option>
+                                <option value="Weight Training">Weight Training</option>
+                                <option value="Yoga">Yoga</option>
+                                <option value="Swimming">Swimming</option>
+                                <option value="CrossFit">CrossFit</option>
+                                <option value="Pilates">Pilates</option>
+                                <option value="Boxing">Boxing</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="activityDuration">Duration (minutes) *</label>
+                            <input type="number" id="activityDuration" min="1" max="480" required placeholder="Enter duration">
+                        </div>
+                        <div class="form-group">
+                            <label for="activityCalories">Calories Burned</label>
+                            <input type="number" id="activityCalories" min="0" max="2000" placeholder="Enter calories (optional)">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="activityNotes">Notes (optional)</label>
+                        <textarea id="activityNotes" rows="3" placeholder="Any additional notes about the workout..."></textarea>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="btn">Add Activity</button>
+                        <button type="reset" class="btn btn-secondary">Clear Form</button>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="quick-links">
+                <h3>Quick Actions</h3>
+                <a href="addCustomer.html" class="btn">Add Customer</a>
+                <a href="viewCustomers.html" class="btn">View Customers</a>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+    <script>
+        // Check if user is logged in
+        if (!isLoggedIn()) {
+            window.location.href = 'login.html';
+        }
+        
+        // Initialize page
+        window.onload = function() {
+            updateCustomerDropdown();
+            // Set today's date as default
+            document.getElementById('activityDate').valueAsDate = new Date();
+        };
+        
+        function updateCustomerDropdown() {
+            const select = document.getElementById('activityCustomer');
+            const customers = getCustomers();
+            
+            select.innerHTML = '<option value="">Choose a customer...</option>';
+            
+            customers.forEach(customer => {
+                const option = document.createElement('option');
+                option.value = customer.id;
+                option.textContent = customer.name;
+                select.appendChild(option);
+            });
+            
+            if (customers.length === 0) {
+                const errorDiv = document.getElementById('errorMessage');
+                errorDiv.textContent = 'No customers found. Please add customers first.';
+                errorDiv.classList.remove('hidden');
+            }
+        }
+        
+        function handleAddActivity(event) {
+            event.preventDefault();
+            
+            const activityData = {
+                customerId: parseInt(document.getElementById('activityCustomer').value),
+                date: document.getElementById('activityDate').value,
+                type: document.getElementById('activityType').value,
+                duration: parseInt(document.getElementById('activityDuration').value),
+                calories: parseInt(document.getElementById('activityCalories').value) || 0,
+                notes: document.getElementById('activityNotes').value
+            };
+            
+            const activity = addActivity(activityData);
+            
+            if (activity) {
+                const successDiv = document.getElementById('successMessage');
+                const customer = getCustomerById(activityData.customerId);
+                successDiv.textContent = `Activity added for ${customer.name} successfully!`;
+                successDiv.classList.remove('hidden');
+                
+                // Reset form
+                event.target.reset();
+                document.getElementById('activityDate').valueAsDate = new Date();
+                
+                // Hide success message after 3 seconds
+                setTimeout(() => {
+                    successDiv.classList.add('hidden');
+                }, 3000);
+            }
+        }
+    </script>
+</body>
+</html>
