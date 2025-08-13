@@ -113,6 +113,17 @@ A **fully modular**, **web-based** Gym Management System with a clean UI, respon
 
 ---
 
+## 🖼 Preview
+
+![Screenshot 1](https://github.com/user-attachments/assets/a6e606c6-aaa6-44f8-aed7-47b2b4518265)  
+![Screenshot 2](https://github.com/user-attachments/assets/51733709-6a6e-46e5-b118-041df686dd3a)  
+![Screenshot 3](https://github.com/user-attachments/assets/d14f75b6-c0c7-4657-9764-9899959d29c6)  
+![Screenshot 4](https://github.com/user-attachments/assets/1a5a01b1-6b37-45ad-aa6a-4e8e19e51876)  
+![Screenshot 5](https://github.com/user-attachments/assets/6534f9de-9a46-4e70-bac0-c34a2e8d34c8)  
+![Screenshot 6](https://github.com/user-attachments/assets/f6e18bf0-30a6-4d0c-9333-e24ffde27dc7)  
+
+---
+
 ## 📝 Notes
 
 - All data stays **on the user’s device** via `localStorage`.  
